@@ -8,6 +8,15 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
         collection: contacts
       });
 
+      contactsListView.on("itemview:contact:delete", function(childView, model) {
+      	contacts.remove(model);
+      });
+
+      contactsListView.on("itemview:contact:highlight", function(childView, model) {
+      	console.log("highlighting toggled on model: " + model);
+      	console.dir(model);
+      });
+
       ContactManager.mainRegion.show(contactsListView);
     }
   }
