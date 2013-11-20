@@ -5,6 +5,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 
 		events: {
 			"click": "highlightName",
+			"click td a.js-show": "showClicked",
 			"click button.js-delete": "deleteClicked"
 		},
 
@@ -21,6 +22,12 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 			this.trigger("contact:highlight", this.model);
 		},
 
+		showClicked: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			this.trigger("contact:show", this.model);
+		},
+
 		deleteClicked: function(e) {
 			e.stopPropagation();
 			this.trigger("contact:delete", this.model);
@@ -33,6 +40,12 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
     className: "table table-hover",
     template: "#contact-list",
 		itemView: List.Contact,
-		itemViewContainer: "tbody"
+		itemViewContainer: "tbody",
+
+		onItemviewContactDelete: function() {
+			this.$el.fadeOut(1000, function() {
+				$(this).fadeIn(1000);
+			})
+		}
 	});
 });
