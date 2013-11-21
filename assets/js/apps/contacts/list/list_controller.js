@@ -1,3 +1,4 @@
+/*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbone, Marionette, $, _) {
 
   List.Controller = {
@@ -14,15 +15,15 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
       });
 
       contactsListView.on("itemview:contact:delete", function(childView, model) {
-      	contacts.remove(model);
+        contacts.remove(model);
       });
 
       contactsListView.on("itemview:contact:highlight", function(childView, model) {
-      	console.log("highlighting toggled on model: ", model);
+        console.log("highlighting toggled on model: " + model);
       });
 
       ContactManager.mainRegion.show(contactsListView);
     }
-  }
+  };
 
 });

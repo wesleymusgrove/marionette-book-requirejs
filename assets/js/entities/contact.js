@@ -1,3 +1,4 @@
+/*global ContactManager:true, console:true*/
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
 	
 	Entities.Contact = Backbone.Model.extend({});

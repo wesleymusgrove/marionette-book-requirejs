@@ -1,0 +1,477 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Con",
+				"ContactManager"
+			],
+			[
+				"stop",
+				"stopPropagation"
+			],
+			[
+				"cal",
+				"calendar-background"
+			],
+			[
+				"cale",
+				"calendar-month-background"
+			],
+			[
+				"inlin",
+				"inline-table"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"Git ini",
+				"Git: Init"
+			],
+			[
+				"gitin",
+				"Git: Init"
+			],
+			[
+				"git",
+				"Git: Init"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"pack in",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Preferences: SFTP Settings"
+			]
+		],
+		"width": 446.0
+	},
+	"console":
+	{
+		"height": 288.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/wesleymusgrove/Library/Application Support/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+		"/Users/wesleymusgrove/Sites/backbone/marionette-book/.gitignore",
+		"/Users/wesleymusgrove/Sites/backbone/marionette-book/.git/MERGE_MSG",
+		"/Users/wesleymusgrove/Sites/backbone/marionette-book/app.js",
+		"/Users/wesleymusgrove/Sites/backbone/marionette-book/assets/js/app.js",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378960205/Covenant/public_html/templates/gantry/js/rokmediaqueries.js",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378954562/Covenant/public_html/libraries/gantry/assets/jui/less/icomoon-social.less",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378783646/Covenant/public_html/libraries/gantry/assets/jui/less/icomoon-social.less",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378869979/Covenant/public_html/test/components/com_widgetkit/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378870153/Covenant/public_html/test/modules/mod_widgetkit_twitter/mod_widgetkit_twitter.xml",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378870105/Covenant/public_html/test/administrator/components/com_widgetkit/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378870041/Covenant/public_html/test/administrator/components/com_widgetkit/classes/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378869949/Covenant/public_html/test/administrator/components/com_widgetkit/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378869898/Covenant/public_html/test/modules/mod_widgetkit_twitter/mod_widgetkit_twitter.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378870090/Covenant/public_html/test/administrator/components/com_widgetkit/classes/helper.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378868063/Covenant/public_html/test/templates/gantry/lib/gantry/gantry.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378868346/Covenant/public_html/test/libraries/gantry/gantry.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378868490/Covenant/public_html/test/libraries/gantry/html/layouts/body_mainbody.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378868453/Covenant/public_html/test/libraries/gantry/tmpl/index.html",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1378783821/Covenant/public_html/test/media/jui/less/icomoon-social.less",
+		"/Users/wesleymusgrove/Desktop/com_xcloner2/configs/prod-061813.php",
+		"/Library/WebServer/Documents/index.html.en",
+		"/private/etc/apache2/httpd.conf",
+		"/Users/wesleymusgrove/Sites/backbone/backbone-cellar/bootstrap/api/.htaccess",
+		"/private/etc/apache2/extra/httpd-vhosts.conf",
+		"/private/etc/apache2/extra/httpd-userdir.conf",
+		"/etc/apache2/httpd.conf",
+		"/etc/hosts",
+		"/private/etc/apache2/users/wesleymusgrove.conf",
+		"/Users/wesleymusgrove/Sites/backbone/backbone-cellar/tutorial/api/.htaccess",
+		"/etc/apache2/users/wesleymusgrove.conf",
+		"/private/etc/apache2/httpd.conf-bak",
+		"/private/var/log/apache2/error.log",
+		"/private/etc/apache2/httpd.conf.pre-update",
+		"/Applications/MAMP/conf/apache/httpd.conf",
+		"/Users/wesleymusgrove/Sites/backbone/backbone-cellar/tutorial/part1/api/.htaccess",
+		"/Users/wesleymusgrove/Sites/backbone/backbone-cellar/cellar.sql",
+		"/Users/wesleymusgrove/Sites/backbone/backbone-cellar/mysql startup server how to.txt",
+		"/Users/wesleymusgrove/Sites/index.php",
+		"/etc/paths",
+		"/Users/wesleymusgrove/.gitconfig",
+		"/Users/wesleymusgrove/.gemrc",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails4/.rvmrc",
+		"/Users/wesleymusgrove/.rvmrc",
+		"/etc/rvmrc",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails4/README.rd",
+		"/Users/wesleymusgrove/.profile",
+		"/Users/wesleymusgrove/Downloads/mcrypt-2.6.8/INSTALL",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372632057/Covenant/public_html/templates/gantry/less/wesley-custom.less",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372635459/Covenant/public_html/templates/gantry/less/mixins/rockettheme/mixins.less",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306594/Covenant/public_html/test/modules/mod_widgetkit/mod_widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306552/Covenant/public_html/test/modules/mod_widgetkit/elements/widget.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306664/Covenant/public_html/test/administrator/components/com_widgetkit/classes/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306627/Covenant/public_html/test/administrator/components/com_widgetkit/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306375/Covenant/public_html/test/components/com_widgetkit/widgetkit.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306730/Covenant/public_html/test/administrator/components/com_widgetkit/widgetkit.xml",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372306710/Covenant/public_html/test/administrator/components/com_widgetkit/classes/helper.php",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1372302257/Covenant/public_html/test/templates/gantry/less/wesley-custom.less",
+		"/var/folders/yd/x6hrdg5n24jdjv9_g00wwwdr0000gn/T/sublime-sftp-browse-1370663497/Covenant/public_html/test/favicon.ico",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/wesley-custom.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_gcalendar_upcoming/mod_gcalendar_upcoming.xml",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_gcalendar_upcoming/tmpl/default.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_jw_tinyletter/tmpl/Default/default.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_rokajaxsearch/themes/light/rokajaxsearch-theme.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_rokajaxsearch/mod_rokajaxsearch.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/jui/less/type.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/plugins/editors/tinymce/tinymce.xml",
+		"/Users/wesleymusgrove/Dropbox/Covenant/Website/social-links.html",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/widgetkit/widgets/twitter/styles/single/template.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/libraries/gantry/assets/jui/less/icomoon.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/libraries/gantry/assets/jui/less/icomoon-social.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/jui/css/icomoon-social.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/jui/less/icomoon-social.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/css-compiled/bootstrap.css",
+		"/Users/wesleymusgrove/Dropbox/Covenant/Website/addthis.html",
+		"/Users/wesleymusgrove/Desktop/cpcfs_test.sql",
+		"/Applications/MAMP/htdocs/joomla31-gantry/libraries/gantry/assets/jui/less/bootstrap-overrides.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_rokajaxsearch/tmpl/default.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/css-compiled/menu-b5a5115dd2a36c2a5a1780bb30e4b9e4.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/cache/GantryLess/3c8734d57d0396f96b88859a766a9387-cache-GantryLess-1012aab6c4677cde8a87b8fa8fbe86a4.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/jui/css/icomoon.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/plugins/editors/tinymce/tinymce.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/libraries/gantry/assets/jui/less/font-awesome.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/media/jui/less/icomoon.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/administrator/templates/isis/less/template.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/cache/GantryLess/3c8734d57d0396f96b88859a766a9387-cache-GantryLess-7acd28ae3692fcf1d12a9426b4f173e2.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/administrator/templates/hathor/less/template.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/components/com_widgetkit/widgetkit.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/modules/mod_widgetkit_twitter/mod_widgetkit_twitter.php",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/mixins/index.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/libraries/gantry/checksums",
+		"/Applications/MAMP/htdocs/joomla31-gantry/administrator/templates/isis/css/template.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/protostar/css/template.css",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/global.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/protostar/less/template.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/joomla/2.5/bootstrap.less",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/bootstrap.less",
+		"/Users/wesleymusgrove/Downloads/IcoMoonSocial56527/fonts/IcoMoonSocial.eot",
+		"/Users/wesleymusgrove/Downloads/IcoMoonSocial56527/fonts/IcoMoonSocial.svg",
+		"/Users/wesleymusgrove/Downloads/IcoMoonSocial56527/fonts/IcoMoonSocial.ttf",
+		"/Users/wesleymusgrove/Downloads/IcoMoonSocial56527/fonts/IcoMoonSocial.woff",
+		"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less/joomla-core.less",
+		"/Users/wesleymusgrove/Dropbox/Covenant/Website/login_info.txt",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/devise/registrations/new.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/devise/registrations/edit.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/layouts/_navbar.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/assets/stylesheets/style.css.scss",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/pages/home.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/layouts/application.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/config/routes.rb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/config/environments/production.rb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/config/environments/development.rb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/Gemfile",
+		"/Users/wesleymusgrove/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/config/application.rb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/.gitignore",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/Gemfile.lock",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/controllers/pages_controller.rb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/app/views/pages/about.html.erb",
+		"/Users/wesleymusgrove/Sites/skillshare/onemonthrails/omrails/README.md",
+		"/Users/wesleymusgrove/Library/Caches/Cleanup At Startup/Transmit/282D8A22-7099-407A-BFFB-48EE1C9FB378/custom.css",
+		"/Users/wesleymusgrove/Library/Caches/Cleanup At Startup/Transmit/FEBFA620-F7C5-4CD7-A61E-3CA35A862B37/style.css",
+		"/Applications/XAMPP/xamppfiles/htdocs/drupal-bootstrap/sites/default/settings.php",
+		"/Users/wesleymusgrove/Library/Application Support/Sublime Text 2/Packages/SFTP/SFTP.sublime-settings",
+		"/Users/wesleymusgrove/Library/Application Support/Sublime Text 2/Packages/User/Package Control.sublime-settings"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"/Applications/MAMP/htdocs/joomla31-gantry/administrator/components/com_widgetkit",
+			"",
+			"/Applications/MAMP/htdocs/joomla31-gantry/media/editors/tinymce",
+			"",
+			"/Applications/MAMP/htdocs/joomla31-gantry/templates/gantry/less",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"test",
+			".dropdown",
+			"home",
+			"front",
+			"breadcrumbs",
+			"rt-breadcrumbs",
+			"menu-block",
+			"social",
+			"vertical-two-colors",
+			"cpcfs",
+			"cron",
+			"secret",
+			"private",
+			".el",
+			"servername",
+			"documentroot",
+			"error.log",
+			"error_log",
+			"document",
+			"directory",
+			"User",
+			"php5",
+			"getConnection",
+			"getWines",
+			"\ngetWines",
+			">\n",
+			"%>\n",
+			"vertical-two-colors",
+			"rt-header",
+			"#bottom-twitter-tweet",
+			"997D4D",
+			"icon-social",
+			"IcomoonSocial",
+			"icon-social",
+			"icon-social-",
+			"downloa",
+			"anchor",
+			"url",
+			"chain",
+			"link",
+			"icomoon",
+			"calendar-icon.gif",
+			"menu-block",
+			"wk-twitter-single",
+			"wk-twitter",
+			"wk-twitter-single",
+			"icomoonsocial",
+			"hover",
+			"active",
+			".gf-menu li.parent > .item:after",
+			".gf-menu li:hover",
+			".box-shadow",
+			"&",
+			"toggle",
+			"name === \"name\"",
+			"data-mce",
+			"name.indexOf('data-mce-')",
+			"allow",
+			"empty",
+			"toggle",
+			"invalid",
+			"icon",
+			"  <span aria-hidden=\"true\" class=\"icon-social-facebook\"></span>\n",
+			"facebook",
+			"icon",
+			"social",
+			"15px",
+			"rockettheme/mixins.less",
+			"valid",
+			"rockettheme/mixins.less",
+			"icomoon",
+			"\\e024",
+			"\\e00b",
+			"icomoon-lte-ie7.js",
+			"font-awesome.less",
+			"icomoon.less",
+			"iconmoon.less",
+			"valid",
+			"google",
+			"podcast",
+			"@font-face",
+			"@fontface",
+			">",
+			"+",
+			"-webkit-gradient",
+			".border-radius(",
+			"-webkit-gradient",
+			".gf-menu-toggle",
+			"logo",
+			"line-height",
+			"#main.fullwidth",
+			"#main.fullwidth, .layout-full #main, .col-full",
+			"table",
+			"header-left",
+			"orange:hover"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"social-icon",
+			"social-icon-"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"list_vew",
+				"marionette-book/assets/js/apps/contacts/list/list_view.js"
+			],
+			[
+				"index",
+				"marionette-book/index.html"
+			],
+			[
+				"layout",
+				"app/views/layouts/application.html.erb"
+			],
+			[
+				"rout",
+				"config/routes.rb"
+			],
+			[
+				"pages",
+				"app/controllers/pages_controller.rb"
+			],
+			[
+				"home.",
+				"app/views/pages/home.html.erb"
+			],
+			[
+				"home.h",
+				"app/views/pages/home.html.erb"
+			],
+			[
+				"application.ht",
+				"app/views/layouts/application.html.erb"
+			],
+			[
+				"router",
+				"config/routes.rb"
+			],
+			[
+				"application.js",
+				"app/assets/javascripts/application.js"
+			],
+			[
+				"route",
+				"config/routes.rb"
+			],
+			[
+				"viewshomt",
+				"app/views/pages/home.html.erb"
+			],
+			[
+				"controllers/page",
+				"app/controllers/pages_controller.rb"
+			],
+			[
+				"app/views/pages",
+				"app/views/pages/home.html.erb"
+			],
+			[
+				"",
+				"Gemfile"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 137.0,
+	"status_bar_visible": true
+}

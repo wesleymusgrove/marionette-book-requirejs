@@ -1,3 +1,4 @@
+/*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _) {
 
   Show.Controller = {
@@ -9,6 +10,6 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 
       ContactManager.mainRegion.show(contactView);
     }
-  }
+  };
 
 });

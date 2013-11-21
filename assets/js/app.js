@@ -1,3 +1,4 @@
+/*global ContactManager:true, console:true, Marionette:true, Backbone:true*/
 var ContactManager = new Marionette.Application();
 
 ContactManager.addRegions({
@@ -5,7 +6,8 @@ ContactManager.addRegions({
 });
 
 ContactManager.navigate = function(route, options) {
-  options || (options = {});
+  //options || (options = {});
+  if(!options) {options = {};}
   Backbone.history.navigate(route, options);
 };
 
