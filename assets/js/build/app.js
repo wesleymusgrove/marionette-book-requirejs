@@ -31814,25 +31814,124 @@ ContactManager.on("initialize:after", function() {
   if(Backbone.history) {
     Backbone.history.start();
 
-    if (this.getCurrentRoute === "") {
+    if (Backbone.history.fragment === "") {
       ContactManager.trigger("contacts:list");
     }
   }
 });
+/*global ContactManager, console*/
+ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
+	var findStorageKey = function(entity) {
+		//use a model's urlRoot value
+		if(entity.urlRoot) {
+			return _.result(entity, "urlRoot");
+		}
+
+		//use a collection's url value
+		if(entity.url) {
+			return _.result(entity, "url");
+		}
+
+		//fallback to obtaining a model's storage key from the collection it belongs to
+		if(entity.collection && entity.collection.url) {
+			return _.result(entity.collection, "url");
+		}
+
+		throw new Error("Unable to determine storage key");
+	};
+
+	var StorageMixin = function(entityPrototype) {
+		var storageKey = findStorageKey(entityPrototype);
+		return { localStorage: new Backbone.LocalStorage(storageKey) };
+	};
+
+	Entities.configureStorage = function(entity) {
+		_.extend(entity.prototype, new StorageMixin(entity.prototype));
+	};
+});
+ContactManager.module("Common.Views", function(Views, ContactManager, Backbone, Marionette, $, _) {
+
+  Views.Loading = Marionette.ItemView.extend({
+    template: "#loading-view",
+
+    initialize: function(options) {
+      var options = options || {};
+      this.title = options.title || "Loading Data";
+      this.message = options.message || "Please wait, data is loading.";
+    },
+
+    serializeData: function() {
+      return {
+        title: this.title,
+        message: this.message
+      }
+    },
+
+    onShow: function() {
+      var opts = {
+        lines: 13,
+        length: 20,
+        width: 10,
+        radius: 30,
+        corners: 1,
+        rotate: 0,
+        direction: 1,
+        color: "#000",
+        speed: 1,
+        trail: 60,
+        shadow: false,
+        hwaccel: false,
+        className: "spinner",
+        zIndex: 2e9,
+        top: "30px",
+        left: "auto"
+      };
+
+      $("#spinner").spin(opts);
+    }
+  });
+
+});
 /*global ContactManager:true, console:true*/
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
 	
-	Entities.Contact = Backbone.Model.extend({});
+	Entities.Contact = Backbone.Model.extend({
+		urlRoot: "contacts",
+
+		validate: function(attributes, options) {
+			var errors = {};
+
+			if(!attributes.firstName) {
+				errors.firstName = "can't be blank";
+			}
+
+			if(!attributes.lastName) {
+				errors.lastName = "can't be blank";
+			}
+			else {
+				if(attributes.lastName.length < 2) {
+					errors.lastName = "is too short";
+				}
+			}
+
+			if(!_.isEmpty(errors)) {
+				return errors;
+			}
+		}
+	});
+
+	Entities.configureStorage(Entities.Contact);
 
 	Entities.ContactCollection = Backbone.Collection.extend({
+		url: "contacts",
 		model: Entities.Contact,
 		comparator: "firstName"
 	});
 
-	var contacts;
+	Entities.configureStorage(Entities.ContactCollection);
 
-	var initializeContacts = function() {
-		contacts = new Entities.ContactCollection([
+	var _initializeContacts = function() {
+		var contacts = new Entities.ContactCollection([
 			{
 				id: 1,
 				firstName: "Alice",
@@ -31852,20 +31951,60 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 				phoneNumber: "555-0129"
 			}
 		]);
+
+		contacts.forEach(function(contact) {
+			contact.save();
+		});
+
+		return contacts.models;
 	};
 
 	var API = {
 		getContactEntities: function() {
-			if (contacts === undefined) {
-				initializeContacts();
-			}
+			var defer = $.Deferred();
+			var contacts = new Entities.ContactCollection();
 
-			return contacts;
+			contacts.fetch({
+				success: function(data) {
+					defer.resolve(data);
+				}
+			});
+
+			var promise = defer.promise();
+
+			$.when(promise).done(function(contacts) {
+				if(contacts.length === 0) {
+					var models = this._initializeContacts();
+					contacts.reset(models);
+				}
+			});
+			
+			return promise;
+		},
+		getContactEntity: function(id) {
+			var defer = $.Deferred();
+			var contact = new Entities.Contact({id: id});
+
+			setTimeout(function() {
+				contact.fetch({
+					success: function(data) {
+						defer.resolve(data);
+					},
+					error: function(data) {
+						defer.resolve(undefined);
+					}
+				});
+			}, 2000);
+			return defer.promise();
 		}
 	};
 
 	ContactManager.reqres.setHandler("contact:entities", function(){
 		return API.getContactEntities();
+	});
+
+	ContactManager.reqres.setHandler("contact:entity", function(id) {
+		return API.getContactEntity(id);
 	});
 
 });
@@ -31874,7 +32013,9 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 
 	ContactsApp.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-			"contacts": "listContacts"
+			"contacts": "listContacts",
+			"contacts/:id": "showContact",
+			"contacts/:id/edit": "editContact"
 		}
 	});
 
@@ -31882,12 +32023,28 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 		listContacts: function() {
 			console.log("route to list contacts was triggered");
 			ContactManager.ContactsApp.List.Controller.listContacts();
+		},
+		showContact: function(id) {
+			ContactManager.ContactsApp.Show.Controller.showContact(id);
+		},
+		editContact: function(id) {
+			ContactManager.ContactsApp.Edit.Controller.editContact(id);
 		}
 	};
 
-	ContactManager.on("contacts:list", function(){
+	ContactsApp.on("contacts:list", function(){
 		ContactManager.navigate("contacts");
 		API.listContacts();
+	});
+
+	ContactsApp.on("contact:show", function(id) {
+		ContactManager.navigate("contacts/" + id);
+		API.showContact(id);
+	});
+
+	ContactsApp.on("contact:edit", function(id) {
+		ContactManager.navigate("contacts/" + id + "/edit");
+		API.editContact(id);
 	});
 
 	ContactManager.addInitializer(function() {
@@ -31902,26 +32059,31 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
   List.Controller = {
     listContacts: function() {
-      var contacts = ContactManager.request("contact:entities");
+      var loadingView = new ContactManager.Common.Views.Loading();
+      ContactManager.mainRegion.show(loadingView);
+      
+      var fetchingContacts = ContactManager.request("contact:entities");
 
-      var contactsListView = new List.Contacts({
-        collection: contacts
+      $.when(fetchingContacts).done(function(contacts) {
+        var contactsListView = new List.Contacts({
+          collection: contacts
+        });
+      
+        contactsListView.on("itemview:contact:show", function(childView, model) {
+          console.log("Received itemview:contact:show event on model: ", model);
+          ContactManager.ContactsApp.trigger("contact:show", model.get("id"));
+        });
+
+        contactsListView.on("itemview:contact:delete", function(childView, model) {
+          model.destroy();
+        });
+
+        contactsListView.on("itemview:contact:highlight", function(childView, model) {
+          console.log("highlighting toggled on model: " + model);
+        });
+
+        ContactManager.mainRegion.show(contactsListView);
       });
-
-      contactsListView.on("itemview:contact:show", function(childView, model) {
-        console.log("Received itemview:contact:show event on model: ", model);
-        ContactManager.ContactsApp.Show.Controller.showContact(model);
-      });
-
-      contactsListView.on("itemview:contact:delete", function(childView, model) {
-        contacts.remove(model);
-      });
-
-      contactsListView.on("itemview:contact:highlight", function(childView, model) {
-        console.log("highlighting toggled on model: " + model);
-      });
-
-      ContactManager.mainRegion.show(contactsListView);
     }
   };
 
@@ -31982,13 +32144,33 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _) {
 
   Show.Controller = {
-    showContact: function(model) {
-      console.log("showContent called for model", model);
-      var contactView = new Show.Contact({
-        model: model
+    showContact: function(id) {
+      var loadingView = new ContactManager.Common.Views.Loading({
+        title: "Artificial Loading Delay",
+        message: "Data loading is delayed to demonstrate using a loading view."
       });
+      
+      ContactManager.mainRegion.show(loadingView);
 
-      ContactManager.mainRegion.show(contactView);
+			var fetchingContact = ContactManager.reqres.request("contact:entity", id);
+      
+      $.when(fetchingContact).done(function(contact) {
+        var contactView;
+        if(contact !== undefined) {
+          contactView = new Show.Contact({
+            model: contact
+          });
+
+          contactView.on("contact:edit", function(contact) {
+            ContactManager.ContactsApp.trigger("contact:edit", contact.get("id"));
+          });
+        }
+        else {
+          contactView = new Show.MissingContact();
+        }
+
+        ContactManager.mainRegion.show(contactView);
+      });
     }
   };
 
@@ -31996,6 +32178,107 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _){
 	Show.Contact = Marionette.ItemView.extend({
-		template: "#contact-view"
+		template: "#contact-view", 
+
+		events: {
+			"click a.js-list-contacts": "listContactsClicked",
+      "click a.js-edit": "editClicked"
+		},
+
+		listContactsClicked: function(e) {
+			e.preventDefault();
+			ContactManager.ContactsApp.trigger("contacts:list");
+		},
+
+    editClicked: function(e) {
+      e.preventDefault();
+      this.trigger("contact:edit", this.model);
+    }
+    
 	});
+
+	Show.MissingContact = Marionette.ItemView.extend({
+		template: "#missing-contact-view"
+	});
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbone, Marionette, $, _) {
+  
+  Edit.Controller = {
+    editContact: function(id) {
+      var loadingView = new ContactManager.Common.Views.Loading({
+        title: "Artificial Loading delay",
+        message: "Data loading is delayed to demonstrate using a loading view."
+      });
+
+      ContactManager.mainRegion.show(loadingView);
+
+      var fetchingContact = ContactManager.reqres.request("contact:entity", id);
+
+      $.when(fetchingContact).done(function(contact) {
+        var editView;
+        if(contact !== undefined) {
+          editView = new Edit.Contact({
+            model: contact
+          });
+
+          editView.on("form:submit", function(data) {
+            if(contact.save(data)) {
+              ContactManager.ContactsApp.trigger("contact:show", contact.get("id"));  
+            }
+            else {
+              editView.triggerMethod("form:data:invalid", contact.validationError);
+            }
+          });
+        }
+        else {
+          editView = new ContactManager.ContactsApp.Show.MissingContact();
+        }
+
+        ContactManager.mainRegion.show(editView);
+      });
+    }
+  };
+
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbone, Marionette, $, _) {
+  Edit.Contact = Marionette.ItemView.extend({
+    template: "#contact-form",
+
+    events: {
+      "click button.js-submit": "submitClicked"
+    },
+
+    submitClicked: function(e) {
+      e.preventDefault();
+      var data = Backbone.Syphon.serialize(this);
+      this.trigger("form:submit", data);
+      //console.log("edit contact");
+    },
+
+    //triggerMethod corresponds "form:data:invalid" to onFormDataInvalid
+    onFormDataInvalid: function(errors) {
+      var $view = this.$el;
+
+      var clearFormErrors = function() {
+        var $form = $view.find("form");
+        $form.find(".help-inline.error").each(function() {
+          $(this).remove();
+        });
+        $form.find(".control-group.error").each(function() {
+          $(this).removeClass("error");
+        });
+      };
+
+      var markErrors = function(value, key) {
+        var $controlGroup = $view.find("#contact-" + key).parent();
+        var $errorEl = $("<span>", {class: "help-inline error", text: value});
+        $controlGroup.append($errorEl).addClass("error");
+      };
+
+      clearFormErrors();
+      _.each(errors, markErrors);
+    }
+  });
 });

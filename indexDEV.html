@@ -76,6 +76,7 @@
 				<i class="icon-pencil"></i>
 				Edit this contact
 			</a>
+			<p><a href="#contacts" class="js-list-contacts">Display contacts list</a></p>
 			<p><strong>Phone number:</strong> <%= phoneNumber %></p>
 		</script>
 
@@ -140,12 +141,16 @@
 <script src="./assets/js/vendor/spin.jquery.js"></script>
 
 <script src="./assets/js/app.js"></script>
+<script src="./assets/js/apps/config/storage/localstorage.js"></script>
 <script src="./assets/js/entities/contact.js"></script>
+<script src="./assets/js/common/views.js"></script>
 <script src="./assets/js/apps/contacts/contacts_app.js"></script>
 <script src="./assets/js/apps/contacts/list/list_view.js"></script>
 <script src="./assets/js/apps/contacts/list/list_controller.js"></script>
 <script src="./assets/js/apps/contacts/show/show_controller.js"></script>
 <script src="./assets/js/apps/contacts/show/show_view.js"></script>
+<script src="./assets/js/apps/contacts/edit/edit_controller.js"></script>
+<script src="./assets/js/apps/contacts/edit/edit_view.js"></script>
 
 <script type="text/javascript">
 	ContactManager.start();

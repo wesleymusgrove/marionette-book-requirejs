@@ -52,6 +52,9 @@ module.exports = function(grunt) {
           "assets/js/vendor/spin.jquery.js",
 
           "assets/js/app.js",
+          "assets/js/apps/config/storage/localstorage.js",
+          "assets/js/common/views.js",
+          "assets/js/config/storage/localstorage.js",
           "assets/js/entities/contact.js",
           "assets/js/apps/contacts/contacts_app.js",
           "assets/js/apps/contacts/list/list_controller.js",
@@ -87,12 +90,23 @@ module.exports = function(grunt) {
       }
     },
 
-    //min: {
-    //  dist: {
-    //    src: ['assets/js/build/app.js'],
-    //    dest: 'assets/js/build/app.min.js'
-    //  }
-    //},
+    cssmin: {
+      add_banner: {
+        options: {
+          banner: '/* My minified css file */'
+        },
+        files: {
+        'assets/css/build/output.css': ['assets/css/**/*.css', '!assets/css/build/*.css']
+        }
+      },
+      minify: {
+        expand: true,
+        cwd: 'assets/css/build/',
+        src: ['*.css', '!*.min.css'],
+        dest: 'assets/css/build/',
+        ext: '.min.css'
+      }
+    },
 
     watch: {
       files: '<%= jshint.src %>',
@@ -105,7 +119,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   // Default task.
   //grunt.registerTask('default', 'jshint concat uglify');
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin']);
 };

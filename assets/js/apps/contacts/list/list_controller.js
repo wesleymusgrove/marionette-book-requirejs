@@ -3,26 +3,31 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
   List.Controller = {
     listContacts: function() {
-      var contacts = ContactManager.request("contact:entities");
+      var loadingView = new ContactManager.Common.Views.Loading();
+      ContactManager.mainRegion.show(loadingView);
+      
+      var fetchingContacts = ContactManager.request("contact:entities");
 
-      var contactsListView = new List.Contacts({
-        collection: contacts
+      $.when(fetchingContacts).done(function(contacts) {
+        var contactsListView = new List.Contacts({
+          collection: contacts
+        });
+      
+        contactsListView.on("itemview:contact:show", function(childView, model) {
+          console.log("Received itemview:contact:show event on model: ", model);
+          ContactManager.ContactsApp.trigger("contact:show", model.get("id"));
+        });
+
+        contactsListView.on("itemview:contact:delete", function(childView, model) {
+          model.destroy();
+        });
+
+        contactsListView.on("itemview:contact:highlight", function(childView, model) {
+          console.log("highlighting toggled on model: " + model);
+        });
+
+        ContactManager.mainRegion.show(contactsListView);
       });
-
-      contactsListView.on("itemview:contact:show", function(childView, model) {
-        console.log("Received itemview:contact:show event on model: ", model);
-        ContactManager.ContactsApp.Show.Controller.showContact(model);
-      });
-
-      contactsListView.on("itemview:contact:delete", function(childView, model) {
-        contacts.remove(model);
-      });
-
-      contactsListView.on("itemview:contact:highlight", function(childView, model) {
-        console.log("highlighting toggled on model: " + model);
-      });
-
-      ContactManager.mainRegion.show(contactsListView);
     }
   };
 

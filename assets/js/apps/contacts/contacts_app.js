@@ -3,7 +3,9 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 
 	ContactsApp.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-			"contacts": "listContacts"
+			"contacts": "listContacts",
+			"contacts/:id": "showContact",
+			"contacts/:id/edit": "editContact"
 		}
 	});
 
@@ -11,12 +13,28 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 		listContacts: function() {
 			console.log("route to list contacts was triggered");
 			ContactManager.ContactsApp.List.Controller.listContacts();
+		},
+		showContact: function(id) {
+			ContactManager.ContactsApp.Show.Controller.showContact(id);
+		},
+		editContact: function(id) {
+			ContactManager.ContactsApp.Edit.Controller.editContact(id);
 		}
 	};
 
-	ContactManager.on("contacts:list", function(){
+	ContactsApp.on("contacts:list", function(){
 		ContactManager.navigate("contacts");
 		API.listContacts();
+	});
+
+	ContactsApp.on("contact:show", function(id) {
+		ContactManager.navigate("contacts/" + id);
+		API.showContact(id);
+	});
+
+	ContactsApp.on("contact:edit", function(id) {
+		ContactManager.navigate("contacts/" + id + "/edit");
+		API.editContact(id);
 	});
 
 	ContactManager.addInitializer(function() {

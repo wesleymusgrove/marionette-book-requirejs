@@ -19,7 +19,7 @@ ContactManager.on("initialize:after", function() {
   if(Backbone.history) {
     Backbone.history.start();
 
-    if (this.getCurrentRoute === "") {
+    if (Backbone.history.fragment === "") {
       ContactManager.trigger("contacts:list");
     }
   }
