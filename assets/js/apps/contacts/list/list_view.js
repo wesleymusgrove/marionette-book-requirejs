@@ -1,5 +1,23 @@
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbone, Marionette, $, _) {
+
+	List.Layout = Marionette.Layout.extend({
+		template: "#contact-list-layout",
+
+		regions: {
+			panelRegion: "#panel-region",
+			contactsRegion: "#contacts-region"
+		}
+	});
+
+	List.Panel = Marionette.ItemView.extend({
+		template: "#contact-list-panel",
+
+		triggers: {
+			"click button.js-new": "contact:new"
+		}
+	});
+
 	List.Contact = Marionette.ItemView.extend({
 		tagName: "tr",
 		template: "#contact-list-item",
@@ -59,10 +77,25 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 		itemView: List.Contact,
 		itemViewContainer: "tbody",
 
-		onItemviewContactDelete: function() {
-			this.$el.fadeOut(1000, function() {
-				$(this).fadeIn(1000);
+		initialize: function() {
+			this.listenTo(this.collection, "reset", function() {
+				this.appendHtml = function(collectionView, itemView, index) {
+					collectionView.$el.append(itemView.el);
+				};
 			});
+		},
+
+		onCompositeCollectionRendered: function() {
+			this.appendHtml = function(collectionView, itemView, index) {
+				collectionView.$el.prepend(itemView.el);
+			};
 		}
+
+		//onItemviewContactDelete: function() {
+		//	this.$el.fadeOut(1000, function() {
+		//		$(this).fadeIn(1000);
+		//	});
+		//}
 	});
+
 });

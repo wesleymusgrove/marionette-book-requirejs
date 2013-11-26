@@ -31895,9 +31895,15 @@ ContactManager.module("Common.Views", function(Views, ContactManager, Backbone, 
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
-	
+
 	Entities.Contact = Backbone.Model.extend({
 		urlRoot: "contacts",
+
+		defaults: {
+			firstName: "",
+			lastName: "",
+			phoneNumber: ""
+		},
 
 		validate: function(attributes, options) {
 			var errors = {};
@@ -31931,7 +31937,7 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
 	Entities.configureStorage(Entities.ContactCollection);
 
-	var _initializeContacts = function() {
+	var initializeContacts = function() {
 		var contacts = new Entities.ContactCollection([
 			{
 				id: 1,
@@ -31975,11 +31981,11 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
 			$.when(promise).done(function(contacts) {
 				if(contacts.length === 0) {
-					var models = this._initializeContacts();
+					var models = initializeContacts();
 					contacts.reset(models);
 				}
 			});
-			
+
 			return promise;
 		},
 		getContactEntity: function(id) {
@@ -32056,20 +32062,113 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 
 });
 /*global ContactManager:true, console:true*/
+ContactManager.module("ContactsApp.Common.Views", function(Views, ContactManager, Backbone, Marionette, $, _) {
+  Views.Form = Marionette.ItemView.extend({
+    template: "#contact-form",
+
+    events: {
+      "click button.js-submit": "submitClicked"
+    },
+
+    submitClicked: function(e) {
+      e.preventDefault();
+      var data = Backbone.Syphon.serialize(this);
+      this.trigger("form:submit", data);
+    },
+
+    onRender: function() {
+      if(!this.options.asModal) {
+        var $title = $("<h1>", {text: this.title});
+        this.$el.prepend($title);
+      }
+    },
+
+    onShow: function() {
+      if(this.options.asModal) {
+        this.$el.dialog({
+          modal: true,
+          title: this.title,
+          width: "auto"
+        });
+      }
+    },
+
+    //triggerMethod corresponds "form:data:invalid" to onFormDataInvalid
+    onFormDataInvalid: function(errors) {
+      var $view = this.$el;
+
+      var clearFormErrors = function() {
+        var $form = $view.find("form");
+        $form.find(".help-inline.error").each(function() {
+          $(this).remove();
+        });
+        $form.find(".control-group.error").each(function() {
+          $(this).removeClass("error");
+        });
+      };
+
+      var markErrors = function(value, key) {
+        var $controlGroup = $view.find("#contact-" + key).parent();
+        var $errorEl = $("<span>", {class: "help-inline error", text: value});
+        $controlGroup.append($errorEl).addClass("error");
+      };
+
+      clearFormErrors();
+      _.each(errors, markErrors);
+    }
+  });
+});
+/*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbone, Marionette, $, _) {
 
   List.Controller = {
     listContacts: function() {
       var loadingView = new ContactManager.Common.Views.Loading();
       ContactManager.mainRegion.show(loadingView);
-      
+
       var fetchingContacts = ContactManager.request("contact:entities");
+
+      var contactsListLayout = new List.Layout();
+
+      var contactsListPanelView = new List.Panel();
 
       $.when(fetchingContacts).done(function(contacts) {
         var contactsListView = new List.Contacts({
           collection: contacts
         });
-      
+
+        contactsListLayout.on("show", function() {
+          contactsListLayout.panelRegion.show(contactsListPanelView);
+          contactsListLayout.contactsRegion.show(contactsListView);
+        });
+
+        contactsListPanelView.on("contact:new", function() {
+          var newContact = new ContactManager.Entities.Contact();
+
+          var newView = new ContactManager.ContactsApp.New.Contact({
+            model: newContact,
+            asModal: true
+          });
+
+          newView.on("form:submit", function(data) {
+            var highestId = contacts.max(function(c) { return c.id; });
+
+            highestId = highestId.get("id");
+            data.id = highestId + 1;
+
+            if(newContact.save(data)) {
+              contacts.add(newContact);
+              ContactManager.dialogRegion.close();
+              contactsListView.children.findByModel(newContact).flash("success");
+            }
+            else {
+              newView.triggerMethod("form:data:invalid", newContact.validationError);
+            }
+          });
+
+          ContactManager.dialogRegion.show(newView);
+        });
+
         contactsListView.on("itemview:contact:show", function(childView, model) {
           console.log("Received itemview:contact:show event on model: ", model);
           ContactManager.ContactsApp.trigger("contact:show", model.get("id"));
@@ -32104,7 +32203,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
           console.log("highlighting toggled on model: " + model);
         });
 
-        ContactManager.mainRegion.show(contactsListView);
+        ContactManager.mainRegion.show(contactsListLayout);
       });
     }
   };
@@ -32112,6 +32211,24 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbone, Marionette, $, _) {
+
+	List.Layout = Marionette.Layout.extend({
+		template: "#contact-list-layout",
+
+		regions: {
+			panelRegion: "#panel-region",
+			contactsRegion: "#contacts-region"
+		}
+	});
+
+	List.Panel = Marionette.ItemView.extend({
+		template: "#contact-list-panel",
+
+		triggers: {
+			"click button.js-new": "contact:new"
+		}
+	});
+
 	List.Contact = Marionette.ItemView.extend({
 		tagName: "tr",
 		template: "#contact-list-item",
@@ -32171,12 +32288,27 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 		itemView: List.Contact,
 		itemViewContainer: "tbody",
 
-		onItemviewContactDelete: function() {
-			this.$el.fadeOut(1000, function() {
-				$(this).fadeIn(1000);
+		initialize: function() {
+			this.listenTo(this.collection, "reset", function() {
+				this.appendHtml = function(collectionView, itemView, index) {
+					collectionView.$el.append(itemView.el);
+				};
 			});
+		},
+
+		onCompositeCollectionRendered: function() {
+			this.appendHtml = function(collectionView, itemView, index) {
+				collectionView.$el.prepend(itemView.el);
+			};
 		}
+
+		//onItemviewContactDelete: function() {
+		//	this.$el.fadeOut(1000, function() {
+		//		$(this).fadeIn(1000);
+		//	});
+		//}
 	});
+
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _) {
@@ -32281,64 +32413,16 @@ ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbon
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbone, Marionette, $, _) {
-  Edit.Contact = Marionette.ItemView.extend({
-    template: "#contact-form",
-
-    events: {
-      "click button.js-submit": "submitClicked"
-    },
-
+  Edit.Contact = ContactManager.ContactsApp.Common.Views.Form.extend({
     initialize: function() {
       this.title = "Edit " + this.model.get("firstName");
       this.title += this.model.get("lastName");
-    },
-
-    onRender: function() {
-      if(!this.options.asModal) {
-        var $title = $("<h1>", {text: this.title});
-        this.$el.prepend($title);
-      }
-    },
-
-    onShow: function() {
-      if(this.options.asModal) {
-        this.$el.dialog({
-          modal: true,
-          title: this.title,
-          width: "auto"
-        });
-      }
-    },
-
-    submitClicked: function(e) {
-      e.preventDefault();
-      var data = Backbone.Syphon.serialize(this);
-      this.trigger("form:submit", data);
-      //console.log("edit contact");
-    },
-
-    //triggerMethod corresponds "form:data:invalid" to onFormDataInvalid
-    onFormDataInvalid: function(errors) {
-      var $view = this.$el;
-
-      var clearFormErrors = function() {
-        var $form = $view.find("form");
-        $form.find(".help-inline.error").each(function() {
-          $(this).remove();
-        });
-        $form.find(".control-group.error").each(function() {
-          $(this).removeClass("error");
-        });
-      };
-
-      var markErrors = function(value, key) {
-        var $controlGroup = $view.find("#contact-" + key).parent();
-        var $errorEl = $("<span>", {class: "help-inline error", text: value});
-        $controlGroup.append($errorEl).addClass("error");
-      };
-
-      clearFormErrors();
-      _.each(errors, markErrors);
     }
+  });
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("ContactsApp.New", function(New, ContactManager, Backbone, Marionette, $, _) {
+  New.Contact = ContactManager.ContactsApp.Common.Views.Form.extend({
+    title: "New Contact"
   });
 });

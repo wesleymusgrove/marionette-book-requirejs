@@ -1,8 +1,14 @@
 /*global ContactManager:true, console:true*/
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
-	
+
 	Entities.Contact = Backbone.Model.extend({
 		urlRoot: "contacts",
+
+		defaults: {
+			firstName: "",
+			lastName: "",
+			phoneNumber: ""
+		},
 
 		validate: function(attributes, options) {
 			var errors = {};
@@ -36,7 +42,7 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
 	Entities.configureStorage(Entities.ContactCollection);
 
-	var _initializeContacts = function() {
+	var initializeContacts = function() {
 		var contacts = new Entities.ContactCollection([
 			{
 				id: 1,
@@ -80,11 +86,11 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
 			$.when(promise).done(function(contacts) {
 				if(contacts.length === 0) {
-					var models = this._initializeContacts();
+					var models = initializeContacts();
 					contacts.reset(models);
 				}
 			});
-			
+
 			return promise;
 		},
 		getContactEntity: function(id) {

@@ -6,8 +6,8 @@ module.exports = function(grunt) {
     meta: {
       version: '0.0.1',
       banner: '// MarionetteBook, v<%= meta.version %>\n' +
-        '// Copyright (c)<%= grunt.template.today("yyyy") %> Muted Solutions, LLC.\n' + 
-        '// Distributed under MIT license\n' + 
+        '// Copyright (c)<%= grunt.template.today("yyyy") %> Muted Solutions, LLC.\n' +
+        '// Distributed under MIT license\n' +
         '// http://www.wesley.local/backbone/marionette-book'
     },
 
@@ -57,10 +57,14 @@ module.exports = function(grunt) {
           "assets/js/config/storage/localstorage.js",
           "assets/js/entities/contact.js",
           "assets/js/apps/contacts/contacts_app.js",
+          "assets/js/apps/contacts/common/views.js",
           "assets/js/apps/contacts/list/list_controller.js",
           "assets/js/apps/contacts/list/list_view.js",
           "assets/js/apps/contacts/show/show_controller.js",
           "assets/js/apps/contacts/show/show_view.js",
+          "assets/js/apps/contacts/edit/edit_controller.js",
+          "assets/js/apps/contacts/edit/edit_view.js",
+          "assets/js/apps/contacts/new/new_view.js",
 
           "assets/js/apps/**/*.js"
         ],
@@ -96,14 +100,15 @@ module.exports = function(grunt) {
           banner: '/* My minified css file */'
         },
         files: {
-        'assets/css/build/output.css': ['assets/css/**/*.css', '!assets/css/build/*.css']
+        'assets/css/output.css': ['assets/css/**/*.css', '!assets/css/output.css', '!assets/css/output.min.css']
         }
       },
       minify: {
         expand: true,
-        cwd: 'assets/css/build/',
-        src: ['*.css', '!*.min.css'],
-        dest: 'assets/css/build/',
+        cwd: 'assets/css/',
+        //src: ['*.css', '!*.min.css'],
+        src: ['output.css'],
+        dest: 'assets/css/',
         ext: '.min.css'
       }
     },
