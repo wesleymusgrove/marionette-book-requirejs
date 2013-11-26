@@ -2,7 +2,8 @@
 var ContactManager = new Marionette.Application();
 
 ContactManager.addRegions({
-	mainRegion: "#main-region"
+	mainRegion: "#main-region",
+  dialogRegion: "#dialog-region"
 });
 
 ContactManager.navigate = function(route, options) {
@@ -20,7 +21,7 @@ ContactManager.on("initialize:after", function() {
     Backbone.history.start();
 
     if (Backbone.history.fragment === "") {
-      ContactManager.trigger("contacts:list");
+      ContactManager.ContactsApp.trigger("contacts:list");
     }
   }
 });

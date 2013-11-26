@@ -31797,7 +31797,8 @@ $('#el').spin('flower', 'red');
 var ContactManager = new Marionette.Application();
 
 ContactManager.addRegions({
-	mainRegion: "#main-region"
+	mainRegion: "#main-region",
+  dialogRegion: "#dialog-region"
 });
 
 ContactManager.navigate = function(route, options) {
@@ -31815,7 +31816,7 @@ ContactManager.on("initialize:after", function() {
     Backbone.history.start();
 
     if (Backbone.history.fragment === "") {
-      ContactManager.trigger("contacts:list");
+      ContactManager.ContactsApp.trigger("contacts:list");
     }
   }
 });
@@ -32074,6 +32075,27 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
           ContactManager.ContactsApp.trigger("contact:show", model.get("id"));
         });
 
+        contactsListView.on("itemview:contact:edit", function(childView, model) {
+          console.log("Receieved itemview:contact:edit event on model: ", model);
+          var modalView = new ContactManager.ContactsApp.Edit.Contact({
+            model: model,
+            asModal: true
+          });
+
+          modalView.on("form:submit", function(data) {
+            if(model.save(data)) {
+              childView.render();
+              ContactManager.dialogRegion.close();
+              childView.flash("success");
+            }
+            else {
+              modalView.triggerMethod("form:data:invalid", model.validationError);
+            }
+          });
+
+          ContactManager.dialogRegion.show(modalView);
+        });
+
         contactsListView.on("itemview:contact:delete", function(childView, model) {
           model.destroy();
         });
@@ -32097,6 +32119,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 		events: {
 			"click": "highlightName",
 			"click td a.js-show": "showClicked",
+			"click td a.js-edit": "editClicked",
 			"click button.js-delete": "deleteClicked"
 		},
 
@@ -32119,9 +32142,24 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 			this.trigger("contact:show", this.model);
 		},
 
+		editClicked: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			this.trigger("contact:edit", this.model);
+		},
+
 		deleteClicked: function(e) {
 			e.stopPropagation();
 			this.trigger("contact:delete", this.model);
+		},
+
+		flash: function(cssClass) {
+			var $view = this.$el;
+			$view.hide().toggleClass(cssClass).fadeIn(800, function() {
+				setTimeout(function() {
+					$view.toggleClass(cssClass);
+				}, 500);
+			});
 		}
 
 	});
@@ -32248,6 +32286,28 @@ ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbon
 
     events: {
       "click button.js-submit": "submitClicked"
+    },
+
+    initialize: function() {
+      this.title = "Edit " + this.model.get("firstName");
+      this.title += this.model.get("lastName");
+    },
+
+    onRender: function() {
+      if(!this.options.asModal) {
+        var $title = $("<h1>", {text: this.title});
+        this.$el.prepend($title);
+      }
+    },
+
+    onShow: function() {
+      if(this.options.asModal) {
+        this.$el.dialog({
+          modal: true,
+          title: this.title,
+          width: "auto"
+        });
+      }
     },
 
     submitClicked: function(e) {

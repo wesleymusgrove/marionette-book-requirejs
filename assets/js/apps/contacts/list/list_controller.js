@@ -18,6 +18,27 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
           ContactManager.ContactsApp.trigger("contact:show", model.get("id"));
         });
 
+        contactsListView.on("itemview:contact:edit", function(childView, model) {
+          console.log("Receieved itemview:contact:edit event on model: ", model);
+          var modalView = new ContactManager.ContactsApp.Edit.Contact({
+            model: model,
+            asModal: true
+          });
+
+          modalView.on("form:submit", function(data) {
+            if(model.save(data)) {
+              childView.render();
+              ContactManager.dialogRegion.close();
+              childView.flash("success");
+            }
+            else {
+              modalView.triggerMethod("form:data:invalid", model.validationError);
+            }
+          });
+
+          ContactManager.dialogRegion.show(modalView);
+        });
+
         contactsListView.on("itemview:contact:delete", function(childView, model) {
           model.destroy();
         });
