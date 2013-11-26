@@ -22,12 +22,15 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
           contactsListLayout.contactsRegion.show(contactsListView);
         });
 
+        contactsListPanelView.on("contacts:filter", function(filterCriterion) {
+          console.log("filter list with criterion ", filterCriterion);
+        });
+
         contactsListPanelView.on("contact:new", function() {
           var newContact = new ContactManager.Entities.Contact();
 
           var newView = new ContactManager.ContactsApp.New.Contact({
-            model: newContact,
-            asModal: true
+            model: newContact
           });
 
           newView.on("form:submit", function(data) {
@@ -38,7 +41,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
             if(newContact.save(data)) {
               contacts.add(newContact);
-              ContactManager.dialogRegion.close();
+              newView.trigger("dialog:close");
               contactsListView.children.findByModel(newContact).flash("success");
             }
             else {
@@ -57,14 +60,13 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
         contactsListView.on("itemview:contact:edit", function(childView, model) {
           console.log("Receieved itemview:contact:edit event on model: ", model);
           var modalView = new ContactManager.ContactsApp.Edit.Contact({
-            model: model,
-            asModal: true
+            model: model
           });
 
           modalView.on("form:submit", function(data) {
             if(model.save(data)) {
               childView.render();
-              ContactManager.dialogRegion.close();
+              modalView.trigger("dialog:close");
               childView.flash("success");
             }
             else {

@@ -51,6 +51,7 @@ module.exports = function(grunt) {
           "assets/js/vendor/spin.js",
           "assets/js/vendor/spin.jquery.js",
 
+          "assets/js/apps/config/marionette/regions/dialog.js",
           "assets/js/app.js",
           "assets/js/apps/config/storage/localstorage.js",
           "assets/js/common/views.js",

@@ -31793,12 +31793,36 @@ $('#el').spin('flower', 'red');
 
 }));
 
+/*global Marionette*/
+Marionette.Region.Dialog = Marionette.Region.extend({
+  onShow: function(view) {
+    this.listenTo(view, "dialog:close", this.closeDialog);
+
+    var self = this;
+    this.$el.dialog({
+      modal: true,
+      title: view.title,
+      width: "auto",
+      close: function(e, ui) {
+        self.closeDialog();
+      }
+    });
+  },
+
+  closeDialog: function() {
+    this.stopListening();
+    this.close();
+    this.$el.dialog("destroy");
+  }
+});
 /*global ContactManager:true, console:true, Marionette:true, Backbone:true*/
 var ContactManager = new Marionette.Application();
 
 ContactManager.addRegions({
 	mainRegion: "#main-region",
-  dialogRegion: "#dialog-region"
+  dialogRegion: Marionette.Region.Dialog.extend({
+    el: "#dialog-region"
+  })
 });
 
 ContactManager.navigate = function(route, options) {
@@ -32076,22 +32100,22 @@ ContactManager.module("ContactsApp.Common.Views", function(Views, ContactManager
       this.trigger("form:submit", data);
     },
 
-    onRender: function() {
-      if(!this.options.asModal) {
-        var $title = $("<h1>", {text: this.title});
-        this.$el.prepend($title);
-      }
-    },
-
-    onShow: function() {
-      if(this.options.asModal) {
-        this.$el.dialog({
-          modal: true,
-          title: this.title,
-          width: "auto"
-        });
-      }
-    },
+    //onRender: function() {
+    //  if(!this.options.asModal) {
+    //    var $title = $("<h1>", {text: this.title});
+    //    this.$el.prepend($title);
+    //  }
+    //},
+//
+    //onShow: function() {
+    //  if(this.options.asModal) {
+    //    this.$el.dialog({
+    //      modal: true,
+    //      title: this.title,
+    //      width: "auto"
+    //    });
+    //  }
+    //},
 
     //triggerMethod corresponds "form:data:invalid" to onFormDataInvalid
     onFormDataInvalid: function(errors) {
@@ -32142,12 +32166,15 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
           contactsListLayout.contactsRegion.show(contactsListView);
         });
 
+        contactsListPanelView.on("contacts:filter", function(filterCriterion) {
+          console.log("filter list with criterion ", filterCriterion);
+        });
+
         contactsListPanelView.on("contact:new", function() {
           var newContact = new ContactManager.Entities.Contact();
 
           var newView = new ContactManager.ContactsApp.New.Contact({
-            model: newContact,
-            asModal: true
+            model: newContact
           });
 
           newView.on("form:submit", function(data) {
@@ -32158,7 +32185,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
             if(newContact.save(data)) {
               contacts.add(newContact);
-              ContactManager.dialogRegion.close();
+              newView.trigger("dialog:close");
               contactsListView.children.findByModel(newContact).flash("success");
             }
             else {
@@ -32177,14 +32204,13 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
         contactsListView.on("itemview:contact:edit", function(childView, model) {
           console.log("Receieved itemview:contact:edit event on model: ", model);
           var modalView = new ContactManager.ContactsApp.Edit.Contact({
-            model: model,
-            asModal: true
+            model: model
           });
 
           modalView.on("form:submit", function(data) {
             if(model.save(data)) {
               childView.render();
-              ContactManager.dialogRegion.close();
+              modalView.trigger("dialog:close");
               childView.flash("success");
             }
             else {
@@ -32226,7 +32252,18 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 
 		triggers: {
 			"click button.js-new": "contact:new"
+		},
+
+		events: {
+			"submit #filter-form": "filterContacts"
+		},
+
+		filterContacts: function(e) {
+			e.preventDefault();
+			var criterion = this.$(".js-filter-criterion").val();
+			this.trigger("contacts:filter", criterion);
 		}
+
 	});
 
 	List.Contact = Marionette.ItemView.extend({
@@ -32373,7 +32410,7 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbone, Marionette, $, _) {
-  
+
   Edit.Controller = {
     editContact: function(id) {
       var loadingView = new ContactManager.Common.Views.Loading({
@@ -32389,12 +32426,13 @@ ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbon
         var editView;
         if(contact !== undefined) {
           editView = new Edit.Contact({
-            model: contact
+            model: contact,
+            generateTitle: true
           });
 
           editView.on("form:submit", function(data) {
             if(contact.save(data)) {
-              ContactManager.ContactsApp.trigger("contact:show", contact.get("id"));  
+              ContactManager.ContactsApp.trigger("contact:show", contact.get("id"));
             }
             else {
               editView.triggerMethod("form:data:invalid", contact.validationError);
@@ -32415,14 +32453,27 @@ ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbon
 ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbone, Marionette, $, _) {
   Edit.Contact = ContactManager.ContactsApp.Common.Views.Form.extend({
     initialize: function() {
-      this.title = "Edit " + this.model.get("firstName");
+      this.title = "Edit " + this.model.get("firstName") + " ";
       this.title += this.model.get("lastName");
+    },
+
+    onRender: function() {
+      if(this.options.generateTitle) {
+        var $title = $("<h1>", { text: this.title });
+        this.$el.prepend($title);
+      }
+
+      this.$(".js-submit").text("Update contact");
     }
   });
 });
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.New", function(New, ContactManager, Backbone, Marionette, $, _) {
   New.Contact = ContactManager.ContactsApp.Common.Views.Form.extend({
-    title: "New Contact"
+    title: "New Contact",
+
+    onRender: function() {
+      this.$(".js-submit").text("Create contact");
+    }
   });
 });
