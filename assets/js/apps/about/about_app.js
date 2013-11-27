@@ -11,10 +11,11 @@ ContactManager.module("AboutApp", function(AboutApp, ContactManager, Backbone, M
     showAbout: function() {
       console.log("show about sub app");
       ContactManager.AboutApp.Show.Controller.showAbout();
+      ContactManager.commands.execute("set:active:header", "about");
     }
   };
 
-  AboutApp.on("about:show", function() {
+  ContactManager.on("about:show", function() {
     ContactManager.navigate("about");
     API.showAbout();
   });

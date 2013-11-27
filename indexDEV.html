@@ -8,6 +8,7 @@
 		<link href="./assets/css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
 	</head>
 	<body>
+		<!-- App Regions -->
 		<div id="header-region"></div>
 
 		<div id="main-region" class="container">
@@ -15,7 +16,16 @@
 		</div>
 
 		<div id="dialog-region"></div>
+		<!-- /App Regions -->
 
+		<!-- Layouts -->
+		<script type="text/template" id="contact-list-layout">
+			<div id="panel-region"></div>
+			<div id="contacts-region"></div>
+		</script>
+		<!-- /Layouts -->
+
+		<!-- Templates -->
 		<script type="text/template" id="header-template">
 			<div class="navbar-inner">
 				<div class="container">
@@ -104,11 +114,6 @@
 			</form>
 		</script>
 
-		<script type="text/template" id="contact-list-layout">
-			<div id="panel-region"></div>
-			<div id="contacts-region"></div>
-		</script>
-
 		<script type="text/template" id="contact-list-panel">
 			<button class="btn btn-primary js-new">New contact</button>
 			<form id="filter-form" class="form-search form-inline pull-right">
@@ -124,6 +129,7 @@
 			<p>This application was designed to accompany you during your learning.</p>
 			<p>Hopefully, it has served you well!</p>
 		</script>
+		<!-- Templates -->
 
 	</body>
 </html>
@@ -145,6 +151,7 @@
 <script src="./assets/js/apps/config/storage/localstorage.js"></script>
 <script src="./assets/js/entities/common.js"></script>
 <script src="./assets/js/entities/contact.js"></script>
+<script src="./assets/js/entities/header.js"></script>
 <script src="./assets/js/common/views.js"></script>
 <script src="./assets/js/apps/contacts/contacts_app.js"></script>
 <script src="./assets/js/apps/contacts/common/views.js"></script>
@@ -158,6 +165,9 @@
 <script src="./assets/js/apps/about/about_app.js"></script>
 <script src="./assets/js/apps/about/show/show_controller.js"></script>
 <script src="./assets/js/apps/about/show/show_view.js"></script>
+<script src="./assets/js/apps/header/header_app.js"></script>
+<script src="./assets/js/apps/header/list/list_controller.js"></script>
+<script src="./assets/js/apps/header/list/list_view.js"></script>
 
 <script type="text/javascript">
 	ContactManager.start();

@@ -1,7 +1,7 @@
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _){
 	Show.Contact = Marionette.ItemView.extend({
-		template: "#contact-view", 
+		template: "#contact-view",
 
 		events: {
 			"click a.js-list-contacts": "listContactsClicked",
@@ -10,14 +10,14 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 
 		listContactsClicked: function(e) {
 			e.preventDefault();
-			ContactManager.ContactsApp.trigger("contacts:list");
+			ContactManager.trigger("contacts:list");
 		},
 
     editClicked: function(e) {
       e.preventDefault();
       this.trigger("contact:edit", this.model);
     }
-    
+
 	});
 
 	Show.MissingContact = Marionette.ItemView.extend({

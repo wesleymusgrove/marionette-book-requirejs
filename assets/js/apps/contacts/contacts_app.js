@@ -13,16 +13,19 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 		listContacts: function(criterion) {
 			console.log("route to list contacts was triggered");
 			ContactManager.ContactsApp.List.Controller.listContacts(criterion);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		},
 		showContact: function(id) {
 			ContactManager.ContactsApp.Show.Controller.showContact(id);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		},
 		editContact: function(id) {
 			ContactManager.ContactsApp.Edit.Controller.editContact(id);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		}
 	};
 
-	ContactsApp.on("contacts:list", function(){
+	ContactManager.on("contacts:list", function(){
 		ContactManager.navigate("contacts");
 		API.listContacts();
 	});

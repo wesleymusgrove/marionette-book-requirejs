@@ -31819,6 +31819,7 @@ Marionette.Region.Dialog = Marionette.Region.extend({
 var ContactManager = new Marionette.Application();
 
 ContactManager.addRegions({
+  headerRegion: "#header-region",
 	mainRegion: "#main-region",
   dialogRegion: Marionette.Region.Dialog.extend({
     el: "#dialog-region"
@@ -31840,7 +31841,7 @@ ContactManager.on("initialize:after", function() {
     Backbone.history.start();
 
     if (Backbone.history.fragment === "") {
-      ContactManager.ContactsApp.trigger("contacts:list");
+      ContactManager.trigger("contacts:list");
     }
   }
 });
@@ -32130,16 +32131,19 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 		listContacts: function(criterion) {
 			console.log("route to list contacts was triggered");
 			ContactManager.ContactsApp.List.Controller.listContacts(criterion);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		},
 		showContact: function(id) {
 			ContactManager.ContactsApp.Show.Controller.showContact(id);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		},
 		editContact: function(id) {
 			ContactManager.ContactsApp.Edit.Controller.editContact(id);
+			ContactManager.commands.execute("set:active:header", "contacts");
 		}
 	};
 
-	ContactsApp.on("contacts:list", function(){
+	ContactManager.on("contacts:list", function(){
 		ContactManager.navigate("contacts");
 		API.listContacts();
 	});
@@ -32509,7 +32513,7 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _){
 	Show.Contact = Marionette.ItemView.extend({
-		template: "#contact-view", 
+		template: "#contact-view",
 
 		events: {
 			"click a.js-list-contacts": "listContactsClicked",
@@ -32518,14 +32522,14 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 
 		listContactsClicked: function(e) {
 			e.preventDefault();
-			ContactManager.ContactsApp.trigger("contacts:list");
+			ContactManager.trigger("contacts:list");
 		},
 
     editClicked: function(e) {
       e.preventDefault();
       this.trigger("contact:edit", this.model);
     }
-    
+
 	});
 
 	Show.MissingContact = Marionette.ItemView.extend({
@@ -32614,10 +32618,11 @@ ContactManager.module("AboutApp", function(AboutApp, ContactManager, Backbone, M
     showAbout: function() {
       console.log("show about sub app");
       ContactManager.AboutApp.Show.Controller.showAbout();
+      ContactManager.commands.execute("set:active:header", "about");
     }
   };
 
-  AboutApp.on("about:show", function() {
+  ContactManager.on("about:show", function() {
     ContactManager.navigate("about");
     API.showAbout();
   });
@@ -32645,6 +32650,107 @@ ContactManager.module("AboutApp.Show", function(Show, ContactManager, Backbone, 
 
   Show.AboutView = Marionette.ItemView.extend({
     template: "#about-message"
+  });
+
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("HeaderApp", function(HeaderApp, ContactManager, Backbone, Marionette, $, _) {
+
+  var API = {
+    listHeader: function() {
+      HeaderApp.List.Controller.listHeader();
+    }
+  };
+
+  ContactManager.commands.setHandler("set:active:header", function(name) {
+    ContactManager.HeaderApp.List.Controller.setActiveHeader(name);
+  });
+
+  HeaderApp.on("start", function() {
+    API.listHeader();
+  });
+
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone, Marionette, $, _) {
+
+  List.Controller = {
+    listHeader: function() {
+      var links = ContactManager.reqres.request("header:entities");
+      var headers = new List.Headers({ collection: links });
+
+      headers.on("brand:clicked", function() {
+        ContactManager.trigger("contacts:list");
+      });
+
+      headers.on("itemview:navigate", function(childView, model) {
+        var trigger = model.get("navigationTrigger");
+        ContactManager.trigger(trigger);
+
+        //var url = model.get("url");
+        //if(url === "contacts") {
+        //  ContactManager.trigger("contacts:list");
+        //}
+        //else if (url === "about") {
+        //  ContactManager.trigger("about:show");
+        //}
+        //else {
+        //  throw "no such sub-application: " + url;
+        //}
+      });
+
+      ContactManager.headerRegion.show(headers);
+    },
+
+    setActiveHeader: function(headerURL) {
+      var links = ContactManager.reqres.request("header:entities");
+      var headerToSelect = links.find(function(header) {
+        return header.get("url") === headerURL;
+      });
+      headerToSelect.select();
+      links.trigger("reset");
+    }
+  };
+
+});
+/*global ContactManager:true, console:true*/
+ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone, Marionette, $, _) {
+
+  List.Header = Marionette.ItemView.extend({
+    template: "#header-link",
+    tagName: "li",
+
+    events: {
+      "click a": "navigate"
+    },
+
+    navigate: function(e) {
+      e.preventDefault();
+      this.trigger("navigate", this.model);
+    },
+
+    onRender: function() {
+      if(this.model.selected) {
+        // add class so Bootstrap will highlight the active entry in the navbar
+        this.$el.addClass("active");
+      }
+    }
+  });
+
+  List.Headers = Marionette.CompositeView.extend({
+    template: "#header-template",
+    className: "navbar navbar-inverse navbar-fixed-top",
+    itemView: List.Header,
+    itemViewContainer: "ul",
+
+    events: {
+      "click a.brand": "brandClicked"
+    },
+
+    brandClicked: function(e) {
+      e.preventDefault();
+      this.trigger("brand:clicked");
+    }
   });
 
 });
