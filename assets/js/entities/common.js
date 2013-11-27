@@ -6,8 +6,8 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
     filtered.add(original.models);
     filtered.filterFunction = options.filterFunction;
 
-    var applyFilter = function(filterCriterion, filterStrategy) {
-      var collection = original;
+    var applyFilter = function(filterCriterion, filterStrategy, coll) {
+      var collection = coll || original;
       var criterion;
       if(filterStrategy === "filter") {
         criterion = filterCriterion.trim();
@@ -56,6 +56,20 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       filtered.reset(items);
       return filtered;
     };
+
+    original.on("reset", function() {
+      var items = applyFilter(filtered._currentCriterion, filtered._currentFilter);
+
+      //reset the filtered colleciton with the new items
+      filtered.reset(items);
+    });
+
+    original.on("add", function(models) {
+      var coll = new original.constructor();
+      coll.add(models);
+      var items = applyFilter(filtered._currentCriterion, filtered._currentFilter, coll);
+      filtered.add(items);
+    });
 
     return filtered;
   };

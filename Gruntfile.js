@@ -56,6 +56,7 @@ module.exports = function(grunt) {
           "assets/js/apps/config/storage/localstorage.js",
           "assets/js/common/views.js",
           "assets/js/config/storage/localstorage.js",
+          "assets/js/entities/common.js",
           "assets/js/entities/contact.js",
           "assets/js/apps/contacts/contacts_app.js",
           "assets/js/apps/contacts/common/views.js",
@@ -66,6 +67,9 @@ module.exports = function(grunt) {
           "assets/js/apps/contacts/edit/edit_controller.js",
           "assets/js/apps/contacts/edit/edit_view.js",
           "assets/js/apps/contacts/new/new_view.js",
+          "assets/js/apps/about/about_app.js",
+          "assets/js/apps/about/show/show_controller.js",
+          "assets/js/apps/about/show/show_view.js",
 
           "assets/js/apps/**/*.js"
         ],

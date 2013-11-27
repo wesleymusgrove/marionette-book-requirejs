@@ -1,6 +1,12 @@
 /*global ContactManager:true, console:true*/
 ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbone, Marionette, $, _) {
 
+	var NoContactsView = Marionette.ItemView.extend({
+		template: "#contact-list-none",
+		tagName: "tr",
+		className: "alert"
+	});
+
 	List.Layout = Marionette.Layout.extend({
 		template: "#contact-list-layout",
 
@@ -21,10 +27,18 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 			"submit #filter-form": "filterContacts"
 		},
 
+		ui: {
+			criterion: "input.js-filter-criterion"
+		},
+
 		filterContacts: function(e) {
 			e.preventDefault();
 			var criterion = this.$(".js-filter-criterion").val();
 			this.trigger("contacts:filter", criterion);
+		},
+
+		onSetFilterCriterion: function(criterion) {
+			this.ui.criterion.val(criterion);
 		}
 
 	});
@@ -85,6 +99,7 @@ ContactManager.module("ContactsApp.List", function(List, ContactsManager, Backbo
 		tagName: "table",
     className: "table table-hover",
     template: "#contact-list",
+    emptyView: NoContactsView,
 		itemView: List.Contact,
 		itemViewContainer: "tbody",
 
