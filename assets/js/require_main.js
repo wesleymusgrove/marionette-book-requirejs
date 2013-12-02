@@ -7,7 +7,7 @@ requirejs.config({
     json2: "vendor/json2",
     backbone: "vendor/backbone",
     marionette: "vendor/backbone.marionette",
-    dialog: "apps/config/marionette/regions/dialog"
+    localstorage: "vendor/backbone.localstorage"
   },
 
   shim: {
@@ -25,6 +25,9 @@ requirejs.config({
     "jquery-ui": {
       deps: ["jquery"]
     },
+    localstorage: {
+      deps: ["backbone"]
+    }
   }
 
 });

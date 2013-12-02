@@ -1,4 +1,4 @@
-define(["marionette", "dialog"], function(Marionette) {
+define(["marionette", "apps/config/marionette/regions/dialog"], function(Marionette) {
 
   var ContactManager = new Marionette.Application();
 
@@ -22,12 +22,17 @@ define(["marionette", "dialog"], function(Marionette) {
 
   ContactManager.on("initialize:after", function() {
     console.log("Contact Manager has started");
+    
     if(Backbone.history) {
-      Backbone.history.start();
+      require(["apps/contacts/contacts_app"], function() {
 
-      if (Backbone.history.fragment === "") {
-        ContactManager.trigger("contacts:list");
-      }
+        Backbone.history.start();
+
+        if (Backbone.history.fragment === "") {
+          ContactManager.trigger("contacts:list");
+        }
+
+      });
     }
   });
 
