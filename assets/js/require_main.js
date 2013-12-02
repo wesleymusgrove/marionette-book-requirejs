@@ -2,10 +2,12 @@ requirejs.config({
   baseUrl: "assets/js",
   paths: {
     jquery: "vendor/jquery",
+    "jquery-ui": "vendor/jquery-ui",
     underscore: "vendor/underscore",
     json2: "vendor/json2",
     backbone: "vendor/backbone",
-    marionette: "vendor/backbone.marionette"
+    marionette: "vendor/backbone.marionette",
+    dialog: "apps/config/marionette/regions/dialog"
   },
 
   shim: {
@@ -19,14 +21,18 @@ requirejs.config({
     marionette: {
       deps: ["backbone"],
       exports: "Marionette"
-    }
+    },
+    "jquery-ui": {
+      deps: ["jquery"]
+    },
   }
 
 });
 
-require(["marionette"], function(m) {
+require(["app"], function(ContactManager) {
   console.log("jQuery version: ", $.fn.jquery);
   console.log("underscore identity: ", _.identity(5));
   console.log("Backbone.history: ", Backbone.history);
-  console.log("Marionette", m);
+  console.log("Marionette", Marionette);
+  ContactManager.start();
 });
