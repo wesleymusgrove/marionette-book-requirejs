@@ -19,55 +19,6 @@
 		<!-- /App Regions -->
 
 		<!-- Templates -->
-		<script type="text/template" id="contact-list">
-			<thead>
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</script>
-
-		<script type="text/template">
-			<td colspan="3">No Contacts to display.</td>
-		</script>
-
-		<script type="text/template" id="contact-list-item">
-			<td><%= firstName %></td>
-			<td><%= lastName %></td>
-			<td>
-				<a href="#contacts/<%= id %>" class="btn btn-small js-show">
-					<i class="icon-eye-open"></i>
-					Show
-				</a>
-				<a href="#contacts/<%= id %>/edit" class="btn btn-small js-edit">
-					<i class="icon-pencil"></i>
-					Edit
-				</a>
-				<button class="btn btn-small js-delete">
-					<i class="icon-remove"></i>
-					Delete
-				</button
-			</td>
-		</script>
-
-		<script type="text/template" id="contact-list-layout">
-			<div id="panel-region"></div>
-			<div id="contacts-region"></div>
-		</script>
-
-		<script type="text/template" id="contact-list-panel">
-			<button class="btn btn-primary js-new">New contact</button>
-			<form class="form-search form-inline pull-right">
-				<div class="input-append">
-					<input type="text" class="span2 search-query js-filter-criterion">
-					<button type="submit" class="btn js-filter">Filter contacts</button>
-				</div>
-			</form>
-		</script>
 		<!-- /Templates -->
 
 		<script data-main="./assets/js/require_main.js" src="./assets/js/vendor/require.js"></script>

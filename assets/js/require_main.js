@@ -7,7 +7,8 @@ requirejs.config({
     json2: "vendor/json2",
     backbone: "vendor/backbone",
     marionette: "vendor/backbone.marionette",
-    localstorage: "vendor/backbone.localstorage"
+    localstorage: "vendor/backbone.localstorage",
+    tpl: "vendor/tpl"
   },
 
   shim: {
